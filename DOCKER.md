@@ -8,6 +8,17 @@ This guide explains how to use Docker to run the Markdown to DOCX/PDF Converter 
 - **No Local Dependencies**: No need to install Pandoc, wkhtmltopdf, or Python packages on your host system
 - **Isolation**: Clean, reproducible environment without conflicts with local tools
 - **Portability**: Works the same way everywhere
+- **Perfect for Windows**: Eliminates Windows-specific rendering and formatting issues
+
+## Windows vs Linux Output Differences
+
+Many users find that the same Markdown file produces different results on Windows vs Linux:
+
+- **PDF Rendering**: Font rendering, spacing, and layout can vary significantly
+- **DOCX Formatting**: Styles and formatting may appear differently
+- **Dependencies**: Windows installation of Pandoc/LaTeX can be problematic
+
+**Docker Solution**: By running in a Linux container, you guarantee consistent, professional Linux-style output regardless of your Windows host system.
 
 ## Prerequisites
 
@@ -53,6 +64,13 @@ This guide explains how to use Docker to run the Markdown to DOCX/PDF Converter 
 docker-compose up md-converter
 
 # Using docker-compose with custom file
+# Windows PowerShell (recommended for Windows users)
+$env:INPUT_FILE="./your-file.md"; docker-compose up md-converter
+
+# Windows Command Prompt
+set INPUT_FILE=./your-file.md && docker-compose up md-converter
+
+# Linux/macOS
 INPUT_FILE=./your-file.md docker-compose up md-converter
 
 # Using docker run directly
@@ -161,6 +179,27 @@ docker run --rm \
 ```
 
 ## Troubleshooting
+
+### Windows-Specific Issues
+
+**PowerShell Environment Variable Not Working:**
+```powershell
+# Use this syntax for PowerShell
+$env:INPUT_FILE="./your-file.md"; docker-compose up md-converter
+```
+
+**Command Prompt Environment Variable Not Working:**
+```cmd
+# Use this syntax for Command Prompt
+set INPUT_FILE=./your-file.md && docker-compose up md-converter
+```
+
+**Alternative: Create .env File**
+Create a `.env` file in your project directory:
+```
+INPUT_FILE=./your-file.md
+```
+Then simply run: `docker-compose up md-converter`
 
 ### Permission Issues (Linux/macOS)
 

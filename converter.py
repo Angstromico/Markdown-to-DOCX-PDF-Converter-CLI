@@ -38,21 +38,21 @@ class MarkdownConverter:
         """
         # Check for Pandoc
         if not check_command_exists('pandoc'):
-            self.console.print("[red]✗[/red] Pandoc is not installed!")
+            self.console.print("[red]x[/red] Pandoc is not installed!")
             self.console.print("\n[yellow]To install Pandoc:[/yellow]")
             self.console.print("  • Ubuntu/Debian: sudo apt-get install pandoc")
             self.console.print("  • macOS: brew install pandoc")
             self.console.print("  • Windows: Download from https://pandoc.org/installing.html")
             sys.exit(1)
         
-        self.console.print("[green]✓[/green] Pandoc is installed")
+        self.console.print("[green]+[/green] Pandoc is installed")
         
         # Check for PDF engines
         pdf_engines = self._get_available_pdf_engines()
         if pdf_engines:
-            self.console.print(f"[green]✓[/green] Available PDF engines: {', '.join(pdf_engines)}")
+            self.console.print(f"[green]+[/green] Available PDF engines: {', '.join(pdf_engines)}")
         else:
-            self.console.print("[yellow]⚠[/yellow] No PDF engine found")
+            self.console.print("[yellow]![/yellow] No PDF engine found")
             self.console.print("\n[yellow]To install a PDF engine:[/yellow]")
             self.console.print("  • wkhtmltopdf (recommended):")
             self.console.print("    - Ubuntu/Debian: sudo apt-get install wkhtmltopdf")
@@ -116,14 +116,14 @@ class MarkdownConverter:
                 check=True
             )
             
-            self.console.print(f"[green]✓[/green] DOCX file created: {output_file}")
+            self.console.print(f"[green]+[/green] DOCX file created: {output_file}")
             return True
             
         except subprocess.CalledProcessError as e:
-            self.console.print(f"[red]✗[/red] DOCX conversion failed: {e.stderr}")
+            self.console.print(f"[red]x[/red] DOCX conversion failed: {e.stderr}")
             return False
         except Exception as e:
-            self.console.print(f"[red]✗[/red] DOCX conversion error: {e}")
+            self.console.print(f"[red]x[/red] DOCX conversion error: {e}")
             return False
     
     def _convert_to_pdf(self) -> bool:
@@ -137,7 +137,7 @@ class MarkdownConverter:
             pdf_engines = self._get_available_pdf_engines()
             
             if not pdf_engines:
-                self.console.print("[red]✗[/red] No PDF engine available for PDF conversion")
+                self.console.print("[red]x[/red] No PDF engine available for PDF conversion")
                 return False
             
             # Use the first available engine (prefer wkhtmltopdf)
@@ -157,12 +157,12 @@ class MarkdownConverter:
                 check=True
             )
             
-            self.console.print(f"[green]✓[/green] PDF file created: {output_file} (using {pdf_engine})")
+            self.console.print(f"[green]+[/green] PDF file created: {output_file} (using {pdf_engine})")
             return True
             
         except subprocess.CalledProcessError as e:
-            self.console.print(f"[red]✗[/red] PDF conversion failed: {e.stderr}")
+            self.console.print(f"[red]x[/red] PDF conversion failed: {e.stderr}")
             return False
         except Exception as e:
-            self.console.print(f"[red]✗[/red] PDF conversion error: {e}")
+            self.console.print(f"[red]x[/red] PDF conversion error: {e}")
             return False

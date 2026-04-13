@@ -65,7 +65,7 @@ def main():
     try:
         # Validate input file
         input_path = validate_input_file(args.input_file)
-        console.print(f"[green]✓[/green] Input file validated: {input_path}")
+        console.print(f"[green]+[/green] Input file validated: {input_path}")
         
         # Determine output formats
         generate_docx = args.docx
@@ -75,7 +75,7 @@ def main():
         if not generate_docx and not generate_pdf:
             generate_docx = True
             generate_pdf = True
-            console.print("[blue]ℹ[/blue] No format specified, generating both DOCX and PDF")
+            console.print("[blue]i[/blue] No format specified, generating both DOCX and PDF")
         
         # Create converter instance
         converter = MarkdownConverter(input_path, args.output)
@@ -87,20 +87,20 @@ def main():
         success = converter.convert(generate_docx, generate_pdf)
         
         if success:
-            console.print("[green]✓[/green] Conversion completed successfully!")
+            console.print("[green]+[/green] Conversion completed successfully!")
             sys.exit(0)
         else:
-            console.print("[red]✗[/red] Conversion failed!")
+            console.print("[red]x[/red] Conversion failed!")
             sys.exit(1)
             
     except FileNotFoundError as e:
-        console.print(f"[red]✗[/red] File not found: {e}")
+        console.print(f"[red]x[/red] File not found: {e}")
         sys.exit(1)
     except ValueError as e:
-        console.print(f"[red]✗[/red] Invalid input: {e}")
+        console.print(f"[red]x[/red] Invalid input: {e}")
         sys.exit(1)
     except Exception as e:
-        console.print(f"[red]✗[/red] Unexpected error: {e}")
+        console.print(f"[red]x[/red] Unexpected error: {e}")
         sys.exit(1)
 
 

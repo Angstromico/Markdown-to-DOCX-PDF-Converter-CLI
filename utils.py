@@ -79,7 +79,7 @@ def create_output_directory(output_dir: Union[str, Path]) -> Path:
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
         console = Console()
-        console.print(f"[blue]ℹ[/blue] Created output directory: {path}")
+        console.print(f"[blue]i[/blue] Created output directory: {path}")
     
     return path.resolve()
 

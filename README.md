@@ -23,7 +23,9 @@ md-converter-cli/
 ├── converter.py         # Core conversion logic using Pandoc
 ├── utils.py             # Utility functions for validation and helpers
 ├── requirements.txt     # Python dependencies
-├── setup.sh            # Virtual environment setup script
+├── setup.sh            # Virtual environment setup script (Linux/macOS)
+├── setup.bat           # Virtual environment setup script (Windows Command Prompt)
+├── setup.ps1           # Virtual environment setup script (Windows PowerShell)
 ├── .gitignore          # Git ignore patterns
 ├── README.md           # This documentation
 └── example.md          # Example Markdown file for testing
@@ -101,7 +103,53 @@ brew install --cask mactex
 
 ### Step 3: Setup Python Virtual Environment
 
-#### Method 1: Using the Setup Script (Recommended)
+#### Windows
+
+**Option 1: Using the Windows Setup Scripts (Recommended)**
+
+The project includes two Windows-specific setup scripts:
+
+- `setup.bat` for Windows Command Prompt (cmd.exe)
+- `setup.ps1` for Windows PowerShell
+
+**Using Command Prompt:**
+```batch
+# Run the setup script
+call setup_pyenv colorama rich
+```
+
+**Using PowerShell:**
+```powershell
+# First, you may need to allow script execution:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Then run the setup function
+Setup-PyEnv colorama rich
+```
+
+**What this does:**
+- Creates a virtual environment at `%USERPROFILE%\venvs\testenv`
+- Activates the virtual environment automatically
+- Installs the specified packages (`colorama` for terminal colors, `rich` for enhanced output)
+- Generates a clean `requirements.txt` with just the project dependencies
+- Ensures the environment is reproducible and isolated
+
+**Option 2: Manual Windows Setup**
+
+```batch
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+#### Linux/macOS
+
+**Option 1: Using the Setup Script (Recommended)**
 
 The `setup.sh` script provides a convenient way to set up a Python virtual environment and install dependencies. It includes a `setup_pyenv()` function that:
 
@@ -127,7 +175,7 @@ setup_pyenv colorama rich
 
 **Note:** The `setup_pyenv` function will overwrite your `requirements.txt` with the current environment state. For this project, we've already cleaned up the requirements.txt to include only the necessary dependencies.
 
-#### Method 2: Manual Setup
+**Option 2: Manual Setup**
 
 ```bash
 # Create virtual environment
@@ -142,6 +190,25 @@ venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 ```
+
+### Quick Start for Windows
+
+1. **Install Python 3.11+** from [python.org](https://www.python.org/downloads/)
+2. **Install Pandoc** from [pandoc.org](https://pandoc.org/installing.html)
+3. **Install wkhtmltopdf** from [wkhtmltopdf.org](https://wkhtmltopdf.org/)
+4. **Set up the environment:**
+   ```batch
+   # Using Command Prompt
+   call setup_pyenv colorama rich
+   ```
+   ```powershell
+   # Using PowerShell
+   Setup-PyEnv colorama rich
+   ```
+5. **Convert your first file:**
+   ```batch
+   python main.py example.md
+   ```
 
 ## Usage Examples
 

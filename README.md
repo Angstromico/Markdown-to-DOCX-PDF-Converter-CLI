@@ -26,6 +26,9 @@ md-converter-cli/
 ├── setup.sh            # Virtual environment setup script (Linux/macOS)
 ├── setup.bat           # Virtual environment setup script (Windows Command Prompt)
 ├── setup.ps1           # Virtual environment setup script (Windows PowerShell)
+├── Dockerfile          # Docker container definition
+├── docker-compose.yml   # Docker Compose configuration
+├── DOCKER.md          # Docker-specific documentation
 ├── .gitignore          # Git ignore patterns
 ├── README.md           # This documentation
 └── example.md          # Example Markdown file for testing
@@ -358,6 +361,49 @@ convert-docs:
   run: |
     python main.py README.md --docx --pdf --output ./docs
 ```
+
+## Docker Support
+
+For consistent Linux-style output across all operating systems, you can use Docker to run the converter in a containerized environment.
+
+### Quick Start with Docker
+
+1. **Build the Docker image:**
+   ```bash
+   docker build -t md-converter-cli .
+   ```
+
+2. **Convert with default file (RFC-Updating-Page.md):**
+   ```bash
+   docker-compose up md-converter
+   ```
+
+3. **Convert with custom file:**
+   ```bash
+   # PowerShell
+   $env:INPUT_FILE="./your-file.md"; docker-compose up md-converter
+   
+   # Command Prompt
+   set INPUT_FILE=./your-file.md && docker-compose up md-converter
+   
+   # Or create .env file with: INPUT_FILE=./your-file.md
+   ```
+
+### Docker Benefits
+
+- **Consistent Output**: Get Linux-style PDF rendering regardless of host OS
+- **No Local Dependencies**: Skip installing Pandoc, LaTeX, or wkhtmltopdf
+- **Isolated Environment**: Clean, reproducible conversions
+- **Cross-Platform**: Works same on Windows, macOS, and Linux
+
+### Docker Configuration
+
+The `docker-compose.yml` uses environment variable `${INPUT_FILE:-./RFC-Updating-Page.md}` to:
+- Use specified file if `INPUT_FILE` environment variable is set
+- Fall back to `RFC-Updating-Page.md` if not specified
+- Always output to `dist/input.pdf` and `dist/input.docx`
+
+For detailed Docker documentation, see [DOCKER.md](DOCKER.md).
 
 ## Future Improvements
 

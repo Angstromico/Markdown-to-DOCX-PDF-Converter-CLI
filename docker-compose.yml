@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  md-converter:
+    build: .
+    container_name: md-converter-cli
+    volumes:
+      - ./input:/app/input
+      - ./dist:/app/dist
+      - ${INPUT_FILE:-./RFC-Updating-Page.md}:/app/input/input.md:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    command: python main.py input/input.md --output /app/dist
+
+  # Interactive shell service
+  md-converter-shell:
+    build: .
+    container_name: md-converter-shell
+    volumes:
+      - ./input:/app/input
+      - ./dist:/app/dist
+      - .:/app/src
+    environment:
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    profiles:
+      - shell

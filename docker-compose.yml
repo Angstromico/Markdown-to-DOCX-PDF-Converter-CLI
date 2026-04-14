@@ -5,13 +5,12 @@ services:
     build: .
     container_name: md-converter-cli
     volumes:
-      - ./input:/app/input
+      - .:/app/workspace
       - ./dist:/app/dist
-      - ${INPUT_FILE:-./RFC-Updating-Page.md}:/app/input/input.md:ro
     environment:
       - PYTHONUNBUFFERED=1
-    working_dir: /app
-    command: python main.py input/input.md --output /app/dist
+    working_dir: /app/workspace
+    command: python main.py ${INPUT_FILE:-RFC-Updating-Page.md} --output /app/dist
 
   # Interactive shell service
   md-converter-shell:

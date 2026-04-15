@@ -7,6 +7,7 @@ services:
     volumes:
       - .:/app/workspace
       - ./dist:/app/dist
+      - ./images:/home/memz/Repos/Oficina-Movil-Fibex/docs/images:ro
     environment:
       - PYTHONUNBUFFERED=1
     working_dir: /app/workspace
@@ -19,6 +20,7 @@ services:
     volumes:
       - ./input:/app/input
       - ./dist:/app/dist
+      - ./images:/home/memz/Repos/Oficina-Movil-Fibex/docs/images:ro
       - .:/app/src
     environment:
       - PYTHONUNBUFFERED=1

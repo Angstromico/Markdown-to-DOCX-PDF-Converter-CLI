@@ -19,19 +19,25 @@ The `md-converter-cli` is a Python command-line application that:
 
 ```
 md-converter-cli/
-├── main.py              # Main CLI entry point and argument parsing
-├── converter.py         # Core conversion logic using Pandoc
-├── utils.py             # Utility functions for validation and helpers
-├── requirements.txt     # Python dependencies
-├── setup.sh            # Virtual environment setup script (Linux/macOS)
-├── setup.bat           # Virtual environment setup script (Windows Command Prompt)
-├── setup.ps1           # Virtual environment setup script (Windows PowerShell)
-├── Dockerfile          # Docker container definition
-├── docker-compose.yml   # Docker Compose configuration
-├── DOCKER.md          # Docker-specific documentation
-├── .gitignore          # Git ignore patterns
-├── README.md           # This documentation
-└── example.md          # Example Markdown file for testing
+|-- main.py              # Main CLI entry point and argument parsing
+|-- converter.py         # Core conversion logic using Pandoc
+|-- utils.py             # Utility functions for validation and helpers
+|-- batch_converter.py   # Batch conversion with image processing
+|-- requirements.txt     # Python dependencies
+|-- setup.sh            # Virtual environment setup script (Linux/macOS)
+|-- setup.bat           # Virtual environment setup script (Windows Command Prompt)
+|-- setup.ps1           # Virtual environment setup script (Windows PowerShell)
+|-- Dockerfile          # Docker container definition
+|-- docker-compose.yml   # Docker Compose configuration
+|-- docker-compose-batch.yml # Batch conversion Docker configuration
+|-- DOCKER.md          # Docker-specific documentation
+|-- BATCH_DOCKER.md     # Batch conversion documentation
+|-- .gitignore          # Git ignore patterns
+|-- README.md           # This documentation
+|-- example.md          # Example Markdown file for testing
+|-- markdown/           # Directory for batch input files
+|-- images/             # Directory for image files
+|-- dist/               # Output directory for converted files
 ```
 
 ## Installation Instructions
@@ -405,11 +411,69 @@ The `docker-compose.yml` uses environment variable `${INPUT_FILE:-./RFC-Updating
 
 For detailed Docker documentation, see [DOCKER.md](DOCKER.md).
 
+## Batch Conversion with Docker
+
+For converting multiple markdown files with automatic image handling, use the batch conversion system:
+
+### Quick Start
+
+1. **Prepare your files:**
+   ```bash
+   mkdir -p markdown images
+   # Copy your .md files to markdown/
+   # Copy your images to images/
+   ```
+
+2. **Run batch conversion:**
+   ```bash
+   docker-compose -f docker-compose-batch.yml up batch-converter
+   ```
+
+3. **Check results:**
+   ```bash
+   ls -la dist/
+   ```
+
+### Features
+
+- **Mass Processing**: Converts all `.md` files in `markdown/` directory
+- **Automatic Image Handling**: Detects and processes images from `images/` directory
+- **Temporary Management**: Copies images to container, modifies paths, cleans up automatically
+- **Linux Consistency**: Same professional output regardless of host OS
+
+### Usage Examples
+
+```bash
+# Convert all files (DOCX + PDF)
+docker-compose -f docker-compose-batch.yml up batch-converter
+
+# DOCX only
+docker-compose -f docker-compose-batch.yml run --rm batch-converter python batch_converter.py --no-pdf
+
+# PDF only
+docker-compose -f docker-compose-batch.yml run --rm batch-converter python batch_converter.py --no-docx
+```
+
+### Directory Structure
+
+```
+project/
+|-- markdown/          # Input markdown files
+|-- images/           # Image files
+|-- dist/             # Output files (created automatically)
+|-- batch_converter.py
+|-- docker-compose-batch.yml
+`-- BATCH_DOCKER.md   # Detailed batch documentation
+```
+
+For complete batch conversion documentation, see [BATCH_DOCKER.md](BATCH_DOCKER.md).
+
 ## Future Improvements
 
 Planned features for future versions:
 
-- [ ] Batch processing of multiple files in a single command
+- [x] Batch processing of multiple files in a single command
+- [x] Docker containerization for easy deployment
 - [ ] Support for additional output formats (HTML, EPUB, etc.)
 - [ ] Custom CSS styling for PDF output
 - [ ] Template system for DOCX formatting
@@ -417,7 +481,6 @@ Planned features for future versions:
 - [ ] Progress bars for large file conversions
 - [ ] Watch mode for automatic conversion on file changes
 - [ ] Integration with popular editors (VS Code, etc.)
-- [ ] Docker containerization for easy deployment
 - [ ] Web API interface for remote conversions
 
 ## Contributing

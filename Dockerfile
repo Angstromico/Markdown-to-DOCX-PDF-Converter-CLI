@@ -7,6 +7,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     pandoc \
     texlive-latex-extra \
+    texlive-fonts-extra \
+    fonts-noto-color-emoji \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies

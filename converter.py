@@ -4,11 +4,35 @@ Markdown converter module for handling DOCX and PDF conversions using Pandoc.
 
 import subprocess
 import sys
+import re
 from pathlib import Path
 from typing import Tuple, Optional
 from rich.console import Console
 
 from utils import create_output_directory, check_command_exists
+
+
+def remove_emojis(text):
+    """Remove emoji and problematic Unicode characters from text for LaTeX compatibility."""
+    emoji_pattern = re.compile(
+        "["
+        "\U0001F600-\U0001F64F"  # emoticons
+        "\U0001F300-\U0001F5FF"  # symbols & pictographs
+        "\U0001F680-\U0001F6FF"  # transport & map symbols
+        "\U0001F700-\U0001F77F"  # alchemical symbols
+        "\U0001F780-\U0001F7FF"  # Geometric Shapes Extended
+        "\U0001F800-\U0001F8FF"  # Supplemental Arrows-C
+        "\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+        "\U0001FA00-\U0001FA6F"  # Chess Symbols
+        "\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+        "\U00002702-\U000027B0"  # Dingbats
+        "\U000024C2-\U0001F251"  # Enclosed characters
+        "\u200D-\u200F"          # Zero-width characters
+        "\uFE0F-\uFEFF"          # Variation selectors and special characters
+        "]+",
+        flags=re.UNICODE
+    )
+    return emoji_pattern.sub(r'', text)
 
 
 class MarkdownConverter:
@@ -133,6 +157,18 @@ class MarkdownConverter:
             
             self.console.print(f"[blue]→[/blue] Converting to PDF: {output_file}")
             
+            # Read the original markdown file
+            with open(self.input_file, 'r', encoding='utf-8') as f:
+                markdown_content = f.read()
+            
+            # Remove emojis for LaTeX compatibility
+            markdown_content = remove_emojis(markdown_content)
+            
+            # Create temporary file with emojis removed
+            temp_file = self.input_file.parent / f"{self.input_file.stem}_no_emoji.md"
+            with open(temp_file, 'w', encoding='utf-8') as f:
+                f.write(markdown_content)
+            
             # Determine which PDF engine to use
             pdf_engines = self._get_available_pdf_engines()
             
@@ -145,8 +181,9 @@ class MarkdownConverter:
             
             cmd = [
                 'pandoc',
-                str(self.input_file),
-                '-o', str(output_file)
+                str(temp_file),
+                '-o', str(output_file),
+                '--pdf-engine=pdflatex'
             ]
             
             result = subprocess.run(
@@ -155,6 +192,9 @@ class MarkdownConverter:
                 text=True,
                 check=True
             )
+            
+            # Clean up temporary file
+            temp_file.unlink(missing_ok=True)
             
             self.console.print(f"[green]+[/green] PDF file created: {output_file} (using {pdf_engine})")
             return True

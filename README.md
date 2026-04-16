@@ -276,6 +276,7 @@ Avoid HTML `<img>` tags:
 - **Relative paths**: Use relative paths like `./images/` for Docker compatibility
 - **File extensions**: Use common formats (.png, .jpg, .jpeg, .gif)
 - **Figure Captions**: Pandoc automatically adds "Figure 1:" prefix to alt text. To avoid this, use empty alt text: `![](./images/image.png){width=300px}`
+- **Emoji Characters**: LaTeX (pdflatex) cannot handle emoji characters (🚀, 💻, etc.). The converter automatically removes emojis from markdown before PDF conversion to prevent errors. If you need emojis in your PDF, use DOCX output instead.
 
 ### Why This Matters
 

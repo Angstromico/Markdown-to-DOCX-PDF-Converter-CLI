@@ -275,6 +275,7 @@ Avoid HTML `<img>` tags:
 - **Specify width**: Use `{width=Xpx}` for consistent sizing
 - **Relative paths**: Use relative paths like `./images/` for Docker compatibility
 - **File extensions**: Use common formats (.png, .jpg, .jpeg, .gif)
+- **Figure Captions**: Pandoc automatically adds "Figure 1:" prefix to alt text. To avoid this, use empty alt text: `![](./images/image.png){width=300px}`
 
 ### Why This Matters
 

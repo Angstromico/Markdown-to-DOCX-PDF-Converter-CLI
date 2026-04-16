@@ -146,8 +146,7 @@ class MarkdownConverter:
             cmd = [
                 'pandoc',
                 str(self.input_file),
-                '-o', str(output_file),
-                f'--pdf-engine={pdf_engine}'
+                '-o', str(output_file)
             ]
             
             result = subprocess.run(

@@ -219,6 +219,71 @@ pip install -r requirements.txt
    python main.py example.md
    ```
 
+## Image Formatting for PDF and Word Output
+
+For images to appear correctly in PDF and Word output, they must use Markdown image syntax instead of HTML `<img>` tags. This ensures proper rendering by Pandoc.
+
+### Correct Image Format
+
+Use this format for images in your Markdown files:
+
+```markdown
+<p align="center">
+  ![Image Description](./images/your-image.png){width=300px}
+</p>
+```
+
+### Incorrect Format (Will not work in PDF/Word)
+
+Avoid HTML `<img>` tags:
+
+```markdown
+<img src="./images/your-image.png" alt="Image Description" width="300"/>
+```
+
+### Image Format Examples
+
+**Basic centered image:**
+```markdown
+<p align="center">
+  ![Screenshot](./images/screenshot.png){width=500px}
+</p>
+```
+
+**Image with specific width:**
+```markdown
+<p align="center">
+  ![Logo](./images/logo.png){width=200px}
+</p>
+```
+
+**Multiple images:**
+```markdown
+<p align="center">
+  ![First Image](./images/image1.png){width=400px}
+</p>
+
+<p align="center">
+  ![Second Image](./images/image2.jpg){width=300px}
+</p>
+```
+
+### Important Notes
+
+- **Use Markdown syntax**: `![alt text](path){width=Xpx}` instead of `<img>` tags
+- **Center with HTML**: Wrap in `<p align="center">` for centering
+- **Specify width**: Use `{width=Xpx}` for consistent sizing
+- **Relative paths**: Use relative paths like `./images/` for Docker compatibility
+- **File extensions**: Use common formats (.png, .jpg, .jpeg, .gif)
+
+### Why This Matters
+
+Pandoc processes Markdown images differently than HTML tags. Using the proper Markdown syntax ensures:
+- Images appear correctly in both PDF and Word output
+- Consistent rendering across different conversion engines
+- Proper image sizing and positioning
+- Docker compatibility with relative paths
+
 ## Usage Examples
 
 ### Basic Usage
